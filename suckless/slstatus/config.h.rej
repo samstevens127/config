@@ -1,0 +1,22 @@
+--- Makefile
++++ Makefile
+@@ -14,6 +14,7 @@
+ 	components/entropy\
+ 	components/hostname\
+ 	components/ip\
++	components/kanji\
+ 	components/kernel_release\
+ 	components/keyboard_indicators\
+ 	components/keymap\
+--- slstatus.h
++++ slstatus.h
+@@ -31,6 +31,9 @@
+ const char *ipv4(const char *interface);
+ const char *ipv6(const char *interface);
+ 
++/* kanji */
++const char *kanji(const char *unused);
++
+ /* kernel_release */
+ const char *kernel_release(const char *unused);
+ 
