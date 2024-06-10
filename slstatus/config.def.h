@@ -1,3 +1,17 @@
+/* Written by Madison Lynch <madi@mxdi.xyz> */
+#include <time.h>
+
+const char *
+kanji(const char *unused) {
+	char *kanji[] = {"日", "月", "火", "水", "木", "金", "土"};
+	time_t t=time(NULL);
+	struct tm tm=*localtime(&t);
+	int map[]={0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4},
+	    m=tm.tm_mon+1,
+	    y=tm.tm_year+1900-(m<3),
+	    wd=(y+y/4-y/100+y/400+map[m-1]+tm.tm_mday)%7;
+	return kanji[wd];
+}
 /* See LICENSE file for copyright and license details. */
 
 /* interval between updates (in ms) */
@@ -31,6 +45,7 @@ static const char unknown_str[] = "n/a";
  * hostname            hostname                        NULL
  * ipv4                IPv4 address                    interface name (eth0)
  * ipv6                IPv6 address                    interface name (eth0)
+ * kanji               japanese day of week kanji      NULL
  * kernel_release      `uname -r`                      NULL
  * keyboard_indicators caps/num lock indicators        format string (c?n?)
  *                                                     see keyboard_indicators.c
@@ -65,5 +80,12 @@ static const char unknown_str[] = "n/a";
  */
 static const struct arg args[] = {
 	/* function format          argument */
-	{ datetime, "%s",           "%F %T" },
+	{ cpu_perc, "[CPU : %s%%] ",        NULL},
+	{ ram_used, "[RAM : %s" , NULL },
+	{ ram_perc, "(%s%%)] ",       NULL },
+/*	{ battery_state, "[BAT : (%s)",    "BAT0" },
+	{ battery_perc, "%s%%] ",         "BAT0" },  if laptop has battery */
+	{ datetime, "%s",           "%m-%d %R" },
+	{ kanji,     "[%s]",             NULL},
+
 };
